@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>กฎระเบียบ | Prime Boxing</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F8F9FA;
+            --bg-dark: #1a1a2e;
+            --text-primary: #111111;
+            --text-secondary: #666666;
+            --text-light: #a0a0a0;
+            --accent: #B4975A;
+            --accent-hover: #9A8045;
+            --accent-light: #F9F5ED;
+            --border: #E5E7EB;
+            --sidebar-width: 280px;
+            --radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; box-shadow: none !important; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Kanit', 'Inter', sans-serif;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           LAYOUT WITH SIDEBAR
+           ========================================= */
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-dark);
+            color: #FFFFFF;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-logo img {
+            height: 32px;
+            width: auto;
+        }
+
+        .sidebar-subtitle {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: #FFFFFF;
+        }
+
+        .nav-item.active {
+            background: rgba(180, 151, 90, 0.15);
+            border-left-color: var(--accent);
+            color: #FFFFFF;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .page-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: transparent;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        .back-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        /* Content Area */
+        .content-area {
+            padding: 32px;
+            max-width: 1000px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        /* Rule Cards */
+        .rule-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .rule-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .rule-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rule-title i {
+            color: var(--accent);
+        }
+
+        .rule-text {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .rule-list {
+            margin-top: 12px;
+            padding-left: 0;
+        }
+
+        .rule-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        .rule-list li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--accent);
+            font-size: 14px;
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+            border-left: 4px solid #EF4444;
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            margin-top: 16px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .warning-box i {
+            color: #EF4444;
+            margin-top: 3px;
+        }
+
+        .warning-box p {
+            font-size: 14px;
+            color: #991B1B;
+            margin: 0;
+        }
+
+        .warning-box strong {
+            font-weight: 600;
+        }
+
+        /* Prohibited List */
+        .prohibited-list {
+            display: grid;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .prohibited-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .prohibited-item i {
+            color: #EF4444;
+            font-size: 18px;
+        }
+
+        .prohibited-item span {
+            font-size: 15px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .content-area {
+                padding: 20px;
+            }
+            
+            .section-title {
+                font-size: 22px;
+            }
+        }
+
+        /* Footer */
+        footer {
+            padding: 24px 32px;
+            background: var(--bg-primary);
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        footer strong {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <img src="logo.png" alt="Prime Boxing">
+                    <span>PRIME Boxing<br>Community RULES</span>
+                </div>
+                <div class="sidebar-subtitle">กฎระเบียบเซิร์ฟเวอร์</div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-item active" onclick="showSection('basic', this)">
+                    <i class="fas fa-file-alt"></i>
+                    <span>กฎการปฏิบัติพื้นฐาน</span>
+                </div>
+                <div class="nav-item" onclick="showSection('programs', this)">
+                    <i class="fas fa-list"></i>
+                    <span>รายชื่อโปรแกรม - ไฟล์</span>
+                </div>
+                <div class="nav-item" onclick="showSection('betting', this)">
+                    <i class="fas fa-handshake"></i>
+                    <span>กฎการต่อยเดิมพันหรือดูหรือเดิมพัน OC</span>
+                </div>
+                <div class="nav-item" onclick="showSection('unban', this)">
+                    <i class="fas fa-unlock"></i>
+                    <span>กฎการปลดแบน</span>
+                </div>
+                <div class="nav-item" onclick="showSection('contact', this)">
+                    <i class="fas fa-envelope"></i>
+                    <span>การติดต่อกรณีปลดแบน</span>
+                </div>
+                <div class="nav-item" onclick="showSection('overlay', this)">
+                    <i class="fas fa-video"></i>
+                    <span>กฎการ Overlay</span>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="page-title">กฎระเบียบ</h1>
+                <a href="/" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> กลับหน้าหลัก
+                </a>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+
+                <!-- Section 1: กฎการปฏิบัติพื้นฐาน -->
+                <section class="section active" id="basic">
+                    <div class="section-header">
+                        <h2 class="section-title">กฎการปฏิบัติพื้นฐาน</h2>
+                        <p class="section-desc">ข้อกำหนดพื้นฐานที่ผู้เล่นทุกคนต้องปฏิบัติตาม</p>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="rule-title"><i class="fas fa-video-slash"></i> การสตรีมและพฤติกรรม</div>
+                        <div class="rule-text">
+                            <ul class="rule-list">
+                                <li>ห้ามสตรีมสไนป์แล้วไปก่อกวนผู้เล่น</li>
+                                <li>ห้ามบูสไมค์ด่าคนมั่ว และห้ามไปเรื้อนใส่ผู้เล่นอื่น</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="rule-title"><i class="fas fa-tshirt"></i> การแต่งกายตัวละคร</div>
+                        <div class="rule-text">
+                            <ul class="rule-list">
+                                <li>ห้ามแต่งตัวล่องหน</li>
+                                <li>ห้ามแต่งตัวเป็นตัวละครเริ่มต้น หรือคล้ายตัวละครเริ่มต้น</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="rule-title"><i class="fas fa-ban"></i> การสื่อสารและโซเชียล</div>
+                        <div class="rule-text">
+                            <ul class="rule-list">
+                                <li>ห้ามกล่าวหาเซิฟเวอร์ในทางไม่ดีในพื้นที่ Community หรือในช่องทาง social ต่างๆ</li>
+                                <li>ห้ามโพสต์ทวิตเตอร์ปลุกปั่น ห้ามปลอมชื่อทวิตก่อกวนผู้อื่น</li>
+                                <li>ห้ามฟลัดทวิตเตอร์รัวๆ จะถือว่าเป็นการก่อกวนผู้เล่นท่านอื่น</li>
+                            </ul>
+                            <div class="warning-box">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p><strong>โทษคือแบน</strong></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="rule-title"><i class="fas fa-user-slash"></i> มารยาทและการเคารพ</div>
+                        <div class="rule-text">
+                            <ul class="rule-list">
+                                <li>ห้ามด่าบุพการีเด็ดขาด</li>
+                                <li>ห้ามมีการ sexually harassed เด็ดขาด</li>
+                                <li>ห้ามเหยียดเพศหรือเหยียดเสียง (LGBTQ+)</li>
+                                <li>ห้ามปั่นป่วนหรือก่อกวนทำให้เกิดความรำคาญใน Discord หรือในเซิฟเวอร์</li>
+                            </ul>
+                            <div class="warning-box">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p><strong>โทษคือแบน</strong> หากแอดมินตักเตือนแล้ว</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="rule-title"><i class="fas fa-coins"></i> ระบบเศรษฐกิจ</div>
+                        <div class="rule-text">
+                            <ul class="rule-list">
+                                <li>ห้ามบิดเหรียญ</li>
+                                <li>สามารถซื้อ-ขาย OC ได้ แต่หากโดนโกงทางเซิฟเวอร์จะไม่รับผิดชอบใดๆ ทั้งสิ้น</li>
+                            </ul>
+                            <div class="warning-box">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p><strong>โทษคือแบน</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 2: รายชื่อโปรแกรม - ไฟล์ -->
+                <section class="section" id="programs">
+                    <div class="section-header">
+                        <h2 class="section-title">รายชื่อโปรแกรม - ไฟล์</h2>
+                        <p class="section-desc">โปรแกรมและไฟล์ที่ต้องห้ามใช้งานในเซิร์ฟเวอร์</p>
+                    </div>
+
+                    <div class="warning-box" style="margin-bottom: 24px;">
+                        <i class="fas fa-skull-crossbones"></i>
+                        <p><strong>ผู้เล่นที่ใช้โปรแกรมหรือมีการดัดแปลงไฟล์ จะถูกแบนจากเซิร์ฟเวอร์ทันที</strong></p>
+                    </div>
+
+                    <div class="prohibited-list">
+                        <div class="prohibited-item">
+                            <i class="fas fa-times-circle"></i>
+                            <span>1. Clumsy</span>
+                        </div>
+                        <div class="prohibited-item">
+                            <i class="fas fa-times-circle"></i>
+                            <span>2. Citizen</span>
+                        </div>
+                        <div class="prohibited-item">
+                            <i class="fas fa-times-circle"></i>
+                            <span>3. CE (Cheat Engine) - ยกเว้นถ้าจะใช้ในการทำเซิร์ฟเวอร์หรือ อื่นๆ ก่อนเข้าเซิร์ฟเวอร์ Pime Boxing Community ต้องลบออกทุกครั้ง</span>
+                        </div>
+                        <div class="prohibited-item">
+                            <i class="fas fa-times-circle"></i>
+                            <span>4. ค่าหมัด</span>
+                        </div>
+                        <div class="prohibited-item">
+                            <i class="fas fa-times-circle"></i>
+                            <span>5. แปลงไฟล์เกมหรือแก้ไขไฟล์ตัวเกม</span>
+                        </div>
+                        <div class="prohibited-item">
+                            <i class="fas fa-times-circle"></i>
+                            <span>6. โปรแกรมอื่นๆ ที่ส่งผลต่อตัวเกมหรือโปรแกรมที่น่าสงสัยและไม่สามารถระบุที่มาที่ไปได้</span>
+                        </div>
+                    </div>
+
+                    <div class="warning-box" style="margin-top: 24px;">
+                        <i class="fas fa-ban"></i>
+                        <p><strong>#โทษคือแบน</strong></p>
+                    </div>
+                </section>
+
+                <!-- Section 3: กฎการเดิมพัน -->
+                <section class="section" id="betting">
+                    <div class="section-header">
+                        <h2 class="section-title">กฎการต่อเติมพันหรือดูหรือเติมพัน OC</h2>
+                        <p class="section-desc">กฎระเบียบเกี่ยวกับการเดิมพันและการแข่งขัน</p>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="rule-title"><i class="fas fa-exclamation-triangle"></i> กรณีบัคหรือไม่ร่วมมือ</div>
+                        <div class="rule-text">
+                            กรณีที่มีการต่อยแล้วตัวบัคต่อยได้ไม่เกิน 3 หมัด หรือถ้าผู้เล่นคนนั้นไม่ยอมปล่อยให้กดอุ้มแล้ว ถือว่า WIN นั้นเป็นโมฆะ
+                            <div class="warning-box">
+                                <i class="fas fa-ban"></i>
+                                <p>หากฝ่าฝืนไม่ทำตามกฎมีโทษ = <strong>BAN</strong></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="rule-title"><i class="fas fa-video"></i> การบันทึก Overlay</div>
+                        <div class="rule-text">
+                            <ul class="rule-list">
+                                <li>ต้องเปิดโอเวอร์เลย์ F4 เอาไว้ด้วย</li>
+                                <li>ถ้าฝ่ายนั้นไม่ยอมให้ทำการเซฟโอเวอร์เลย์ตั้งแต่ต่อยมุมบัคถึงตอนที่เขาไม่ยอมให้ รีวิน แล้วส่งหลักฐานมาได้เลย</li>
+                                <li>ต้องอัดโอเวอร์เลย์ทุกครั้งที่ต่อย อัดทุก Win</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="rule-title"><i class="fas fa-search"></i> การแจ้งเมื่อสงสัย</div>
+                        <div class="rule-text">
+                            <ul class="rule-list">
+                                <li>ในกรณีที่สงสัยฝ่ายตรงข้ามว่าใช้โปรแกรมช่วยเล่น Win ไหน ให้เดินไปบอกให้เค้ากดอัดโอเวอร์ Win นั้น</li>
+                                <li>ในกรณีคนโดนร้องต้องกดอัดโอเวอร์เลย์เลยทันที</li>
+                                <li>ในกรณีไม่อัดถ้าคลิปอีกฝั่งชัดเจนแบนทันที</li>
+                            </ul>
+                            <div class="warning-box">
+                                <i class="fas fa-info-circle"></i>
+                                <p><strong>หมายเหตุ:</strong> ในกรณีที่เจอช็อตแปลกแล้วอัดคลิปมาแจ้งเลย โดยที่ไม่ได้ไปขอ overlay ฝั่งตรงข้าม หรือไม่มีคลิปที่ไปขอ overlay อีกฝั่งที่ชัดเจน ทางแอดมินจะไม่รับเรื่องทุกกรณี</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="rule-title"><i class="fas fa-clipboard-list"></i> การแจ้งแบน</div>
+                        <div class="rule-text">
+                            <ul class="rule-list">
+                                <li>ทุกครั้งที่แจ้งแบนต้องมีคลิปตั้งแต่เริ่มตกลงว่าต่อยกี่ WIN กี่เหรียญ</li>
+                                <li>กรณีแจ้งแบนต้องเปิด F4 ไว้ตลอดในคลิปที่ส่งมา</li>
+                                <li>ถ้าส่งรูปแยกมาไม่รับเรื่อง</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 4: กฎการปลดแบน -->
+                <section class="section" id="unban">
+                    <div class="section-header">
+                        <h2 class="section-title">กฎการปลดแบน</h2>
+                        <p class="section-desc">เงื่อนไขและข้อกำหนดการปลดแบน</p>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="rule-title"><i class="fas fa-times-circle"></i> ไม่มีการปลดแบน</div>
+                        <div class="rule-text">
+                            <strong>ไม่ปลดโปรแกรมช่วยเล่นทุกกรณี</strong>
+                        </div>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="rule-title"><i class="fas fa-check-circle"></i> กรณีที่ปลดแบนได้</div>
+                        <div class="rule-text">
+                            <ul class="rule-list">
+                                <li>ปลดแบนเฉพาะเรื้อนด่าพ่อแม่หรือสร้างปัญหาต่างๆ และเสียค่าปลดแบน <strong>200 ฿</strong></li>
+                                <li>สำหรับใครที่โดนแบนเรื่องใส่สูทมั่วจะแบนถาวร ต้องให้คนลงสูทมายืนยันปลดเท่านั้น และเสียค่าปลดแบน <strong>200 ฿</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 5: การติดต่อปลดแบน -->
+                <section class="section" id="contact">
+                    <div class="section-header">
+                        <h2 class="section-title">การติดต่อกรณีปลดแบน</h2>
+                        <p class="section-desc">ขั้นตอนและข้อกำหนดการติดต่อขอปลดแบน</p>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="rule-title"><i class="fas fa-bullhorn"></i> ประกาศการติดต่อกรณีปลดแบน</div>
+                        <div class="rule-text">
+                            เพื่อความชัดเจนและเป็นระเบียบในการดำเนินงาน ขอความกรุณาผู้เล่นที่ต้องการติดต่อเรื่องการปลดแบนปฏิบัติตามเงื่อนไขดังนี้:
+                        </div>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="rule-title"><i class="fas fa-user-check"></i> ข้อกำหนด Discord</div>
+                        <div class="rule-text">
+                            <ul class="rule-list">
+                                <li>ใช้ Discord หลักที่มีประวัติการเข้าเซิร์ฟเวอร์ในการติดต่อเท่านั้น</li>
+                                <li>หากใช้ Discord ที่ไม่มีประวัติการเข้าเซิร์ฟเวอร์ ทางทีมงานจะไม่รับเรื่องทุกกรณี</li>
+                                <li>ข้อยกเว้น: Discord ที่มีประวัติการเล่นในเซิร์ฟเวอร์ แต่ไม่มีประวัติการถูกแบน</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="rule-title"><i class="fas fa-user-times"></i> ห้ามใช้หลายบัญชี</div>
+                        <div class="rule-text">
+                            <ul class="rule-list">
+                                <li>ห้ามใช้หลายบัญชีเพื่อสร้างความสับสนให้กับทีมงาน</li>
+                                <li>หากพบว่ามีการนำ Discord หรือบัญชีอื่นที่ไม่มีความเกี่ยวข้อง (เช่น "ดิสไก่" หรือ "สตรีมไก่") เข้ามาติดต่อเพื่อหลีกเลี่ยงการตรวจสอบ ทางทีมงานจะถือว่ามีเจตนาสร้างความสับสน</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="rule-title"><i class="fas fa-exclamation-triangle"></i> บทลงโทษเพิ่มเติม</div>
+                        <div class="rule-text">
+                            หากตรวจสอบพบว่ามีเจตนาทำให้ทีมงานสับสนเพื่อหาช่องปลดแบน <strong>ระยะเวลาการถูกแบนจะถูกเพิ่มขึ้น 2 เท่า</strong>
+                        </div>
+                        <div class="warning-box">
+                            <i class="fas fa-info-circle"></i>
+                            <p>ทั้งนี้ เพื่อให้การดำเนินการเป็นไปอย่างโปร่งใสและรวดเร็ว ขอให้ทุกท่านปฏิบัติตามข้อกำหนดข้างต้นอย่างเคร่งครัด</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 6: กฎการ Overlay -->
+                <section class="section" id="overlay">
+                    <div class="section-header">
+                        <h2 class="section-title">กฎการ Overlay</h2>
+                        <p class="section-desc">ข้อกำหนดการบันทึกและใช้งาน Overlay</p>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="rule-title"><i class="fas fa-clock"></i> ระยะเวลาการบันทึก</div>
+                        <div class="rule-text">
+                            <strong>Overlay ต้องเปิดบันทึกขั้นต่ำ 3 นาที เท่านั้น!!</strong>
+                        </div>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="rule-title"><i class="fas fa-user-clock"></i> การตอบสนอง</div>
+                        <div class="rule-text">
+                            <ul class="rule-list">
+                                <li>หากกรณีที่สตาฟลงไปเรียกลงห้องติดต่อแล้วต้องลงภายใน 3 นาทีเท่านั้น</li>
+                                <li>หากสตาฟเรียกมาเช็คเครื่องแล้วสตาฟขอดู Overlay ระหว่างที่เรียกลงห้องติดต่อ แล้วไม่มี Overlay ตั้งแต่ที่สตาฟลงไปเรียก ถือว่าเข้าข่าย <strong>"สุ่มเสี่ยง"</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="rule-title"><i class="fas fa-shield-alt"></i> คำแนะนำ</div>
+                        <div class="rule-text">
+                            <strong>ต่อยทุกครั้งแนะนำให้เปิด Overlay ไว้ตลอด เพื่อรักษาสิทธิของตัวผู้เล่น</strong>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Footer -->
+            <footer>
+                <p>&copy; 2026 <strong>Prime Boxing</strong>. All rights reserved. | FiveM Championship Server</p>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // Show Section Function
+        function showSection(sectionId, navItem) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked nav item
+            navItem.classList.add('active');
+            
+            // Close mobile sidebar
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('active');
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Toggle Sidebar for Mobile
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(e.target) && 
+                !toggle.contains(e.target) && 
+                sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
